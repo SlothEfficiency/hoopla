@@ -40,7 +40,7 @@ def main() -> None:
 
             # Printing search results
             for i in range(0,min(5, len(search_result))):
-                print(f"{i+1}: {search_result[i]}")
+                print(f"{i+1}: ID: {search_result[i]}, Title: {inverted_index.get_title_by_id(search_result[i])}")
 
         case "build":
             inverted_index = InvertedIndex()
@@ -50,7 +50,6 @@ def main() -> None:
             parser.print_help()
 
 
-    
 
 
 if __name__ == "__main__":

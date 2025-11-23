@@ -1,6 +1,6 @@
 import os
 
-from pickle import dump
+from pickle import dump, load
 
 from string_operations import handle_string
 
@@ -24,10 +24,13 @@ class InvertedIndex:
         else:
             return []
         
+    def get_title_by_id(self, id: int) -> str:
+        return self.docmap[id]
+        
     def build(self, movies: list) -> None:
         for i, movie in enumerate(movies, start=1):
             self.__add_document(i, f"{movie['title']} {movie['description']}")
-            self.docmap[i] = {movie['title']}
+            self.docmap[i] = movie['title']
 
     def save(self) -> None:
         if not os.path.exists("cache/"):
@@ -40,13 +43,16 @@ class InvertedIndex:
             dump(self.docmap, f)
 
 
+    def load(self) -> None:
+        try:
+            with open("cache/index.pkl", "rb") as f:
+                self.index = load(f)
+            with open("cache/docmap.pkl", "rb") as f:
+                self.docmap = load(f)
 
+        except Exception as e:
+            raise(f"Error occured while loading: {e}")
+        
 
-
-index = InvertedIndex()
-
-index.build([{"title": "Bros before hoes", "description": "big drama"}])
-
-index.save()
 
         
